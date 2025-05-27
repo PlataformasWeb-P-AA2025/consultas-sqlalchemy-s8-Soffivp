@@ -25,20 +25,19 @@ session = Session()
 # departamento de Arte. En función de la entrega, 
 #presentar, nombre del tarea, nombre del estudiante, calificación, 
 #nombre de instructor y nombre del departamento
-#mdl = session.query(Matricula).join(Estudiante).filter(Estudiante.nombre == "Tony").all()
-#for m in mdl:
-#    print(m.modulo)
 
+#A partir de Entrega vamos uniendo cada una de las clases que necesitamos.
+#Una vez unimos todas las tablas filtramos por el nombre Arte
+#con all traemos todos los resultados del filtro y la union. 
 
-#se obtiene los datos de Tarea
-tareas = session.query(Entrega).join(Tarea).all()
-for t in tareas:
-	#obtengo a traves de la union de curso  
-	curso = tareas.join(Curso).all()
-	#print(t.tarea)
+entregas = (session.query(Entrega).join(Entrega.tarea).join(Tarea.curso)
+	.join(Curso.departamento).join(Curso.instructor).join(Entrega.estudiante)
+    .filter(Departamento.nombre == 'Arte')
+    .all()
+)
 
-
-
-
-
-
+for e in entregas:
+	#El for recorre la consulta y vamos obeniendo los datos solicitados de la consulta entregas.
+	print("Tarea: %s,Estudiante: %s,Calificación %.2f,Instructor %s,Departamento %s " 
+		% (e.tarea.titulo,e.estudiante.nombre, e.calificacion,e.tarea.curso.instructor.nombre,
+		e.tarea.curso.departamento.nombre))

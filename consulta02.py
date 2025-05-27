@@ -26,37 +26,18 @@ session = Session()
 #número de cursos que tiene cada departamento
 
 
+#se obtiene los datos de Departamento, junto a los de curso, tarea y entrega
+# Filtramos las calificaciones menores o iguales a 0.3 
 
-#mdl = session.query(Matricula).join(Estudiante).filter(Estudiante.nombre == "Tony").all()
-#for m in mdl:
-#    print(m.modulo)
-#    session.query(Entrega)
-#    .join(Tarea)
-#    .join(Curso)
-#    .join(Departamento)
-#    .filter(Departamento.id == id_departamento)
-#    .all()
-
-#registros = session.query(Club, Jugador).join(Jugador).\
-#         filter(Jugador.nombre.like("%Da%")).all()
- 
-
-#se obtiene los datos de Tarea
-
-
-dpt = (
-    session.query(Departamento.nombre, Entrega)
-    .select_from(Entrega)
-    .join(Entrega.tarea)
-    .join(Tarea.curso)
-    .join(Curso.departamento)
-    .filter(Entrega.calificacion <= 0.3)
-    .all()
-
-
+departamento = (session.query(Departamento).join(Curso).join(Tarea) 
+    .join(Entrega).filter(Entrega.calificacion <= 0.3) 
+    .all() 
 )
 
-for nombre_dpto, entrega in dpt:
-	for curso 
-    print(f"Departamento: {nombre_dpto}, Nota: {entrega.calificacion}")
 
+
+for dp in departamento:
+
+	print("Nombre Departamento: %s,Numero de cursos: %d" 
+		#len obtiene la cuenta de los cursos
+		% (dp.nombre, len(dp.cursos)))
